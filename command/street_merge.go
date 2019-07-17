@@ -24,6 +24,7 @@ import (
 type street struct {
 	Path *geo.Path
 	Name string
+	Id int
 }
 
 type config struct {
@@ -340,7 +341,7 @@ func generateStreetsFromWays(conn *sqlite.Connection) []*street {
 			path.InsertAt(i, geo.NewPoint(lon, lat))
 		}
 
-		streets = append(streets, &street{Name: name, Path: path})
+		streets = append(streets, &street{Name: name, Path: path, Id: wayid})
 	})
 
 	return streets
