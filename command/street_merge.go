@@ -372,7 +372,8 @@ func generateStreetsFromWays(conn *sqlite.Connection) []*street {
 	loadStreetsFromDatabase(conn, func(rows *sql.Rows) {
 
 		var wayid int
-		var nodeids, name, highway, city, district, country, postcode, maxspeed string
+		var nodeids, name string
+		var highway, city, district, country, postcode, maxspeed sql.NullString
 		err := rows.Scan(&wayid, &nodeids, &name, &highway, &city, &postcode, &maxspeed, &country, &district)
 		if err != nil {
 			log.Fatal(err)
