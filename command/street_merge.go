@@ -25,6 +25,12 @@ type street struct {
 	Path *geo.Path
 	Name string
 	Id int
+	Highway string
+	City string 
+	District string
+	Country string
+	Postcode string
+	Maxspeed string
 }
 
 type config struct {
@@ -85,6 +91,12 @@ func (s *street) Print(conf *config) {
 
 	cols = append(cols, s.Name)
 	cols = append(cols, strconv.Itoa(s.Id))
+	cols = append(cols, s.Highway)
+	cols = append(cols, s.City)
+	cols = append(cols, s.District)
+	cols = append(cols, s.Country)
+	cols = append(cols, s.Postcode)
+	cols = append(cols, s.Maxspeed)
 	fmt.Println(strings.Join(cols, conf.Delim))
 }
 
@@ -295,7 +307,49 @@ func loadStreetsFromDatabase(conn *sqlite.Connection, callback func(*sql.Rows)) 
 			WHERE ref = ways.id
 			AND key = 'name'
 			LIMIT 1
-		) AS name
+		) AS name,
+		(
+			SELECT value
+			FROM way_tags
+			WHERE ref = ways.id
+			AND key = 'highway'
+			LIMIT 1
+		) AS highway,
+		(
+			SELECT value
+			FROM way_tags
+			WHERE ref = ways.id
+			AND key = 'addr:city'
+			LIMIT 1
+		) AS city,
+		(
+			SELECT value
+			FROM way_tags
+			WHERE ref = ways.id
+			AND key = 'addr:postcode'
+			LIMIT 1
+		) AS postcode,
+		(
+			SELECT value
+			FROM way_tags
+			WHERE ref = ways.id
+			AND key = 'maxspeed'
+			LIMIT 1
+		) AS maxspeed,
+		(
+			SELECT value
+			FROM way_tags
+			WHERE ref = ways.id
+			AND key = 'addr:country'
+			LIMIT 1
+		) AS country,
+		(
+			SELECT value
+			FROM way_tags
+			WHERE ref = ways.id
+			AND key = 'addr:district'
+			LIMIT 1
+		) AS district
 	FROM ways
 	ORDER BY ways.id ASC;
 	`)
@@ -342,7 +396,7 @@ func generateStreetsFromWays(conn *sqlite.Connection) []*street {
 			path.InsertAt(i, geo.NewPoint(lon, lat))
 		}
 
-		streets = append(streets, &street{Name: name, Path: path, Id: wayid})
+		streets = append(streets, &street{Name: name, Path: path, Id: wayid, Highway: highway, City: city, District: district, Country: country, Postcode: postcode, Maxspeed: maxspeed})
 	})
 
 	return streets
