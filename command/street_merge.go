@@ -84,7 +84,7 @@ func (s *street) Print(conf *config) {
 	}
 
 	cols = append(cols, s.Name)
-	cols = append(cols, s.Id)
+	cols = append(cols, strconv.Itoa(s.Id))
 	fmt.Println(strings.Join(cols, conf.Delim))
 }
 
