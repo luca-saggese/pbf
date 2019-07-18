@@ -9,6 +9,6 @@ COPY . "$GOPATH/src/github.com/missinglink/pbf"
 
 RUN go get && go build
 
-FROM alpine:3.8
+#FROM alpine:3.8
 
-COPY --from=builder /go/src/github.com/missinglink/pbf/pbf /bin/
+#COPY --from=builder /go/src/github.com/missinglink/pbf/pbf /bin/
