@@ -1,5 +1,5 @@
 package command
-
+ 
 import (
 	"database/sql"
 	"fmt"
