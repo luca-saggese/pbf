@@ -91,12 +91,12 @@ func (s *street) Print(conf *config) {
 
 	cols = append(cols, s.Name)
 	cols = append(cols, strconv.Itoa(s.Id))
-	cols = append(cols, s.Highway.string)
-	cols = append(cols, s.City.string)
-	cols = append(cols, s.District.string)
-	cols = append(cols, s.Country.string)
-	cols = append(cols, s.Postcode.string)
-	cols = append(cols, s.Maxspeed.string)
+	cols = append(cols, s.Highway.String)
+	cols = append(cols, s.City.String)
+	cols = append(cols, s.District.String)
+	cols = append(cols, s.Country.String)
+	cols = append(cols, s.Postcode.String)
+	cols = append(cols, s.Maxspeed.String)
 	fmt.Println(strings.Join(cols, conf.Delim))
 }
 
