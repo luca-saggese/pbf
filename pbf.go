@@ -3,7 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/codegangsta/cli"
+	//"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	"github.com/missinglink/pbf/command"
 )
 
