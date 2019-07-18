@@ -25,12 +25,12 @@ type street struct {
 	Path *geo.Path
 	Name string
 	Id int
-	Highway string
-	City string 
-	District string
-	Country string
-	Postcode string
-	Maxspeed string
+	Highway sql.NullString
+	City sql.NullString 
+	District sql.NullString
+	Country sql.NullString
+	Postcode sql.NullString
+	Maxspeed sql.NullString
 }
 
 type config struct {
