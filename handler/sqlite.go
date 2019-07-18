@@ -47,9 +47,9 @@ func (s *Sqlite3) ReadWay(item gosmparse.Way) {
 	}
 
 	// discard selected tags
-	//item.Tags = tags.Trim(item.Tags)
-	//DeleteTags(item.Tags, discardableTags)
-	//DeleteTags(item.Tags, uninterestingTags)
+	item.Tags = tags.Trim(item.Tags)
+	DeleteTags(item.Tags, discardableTags)
+	DeleteTags(item.Tags, uninterestingTags)
 
 	// ref, key, value
 	for key, value := range item.Tags {
