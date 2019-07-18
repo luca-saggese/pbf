@@ -26,10 +26,6 @@ type street struct {
 	Name string
 	Id int
 	Highway sql.NullString
-	City sql.NullString 
-	District sql.NullString
-	Country sql.NullString
-	Postcode sql.NullString
 	Maxspeed sql.NullString
 }
 
@@ -92,10 +88,6 @@ func (s *street) Print(conf *config) {
 	cols = append(cols, s.Name)
 	cols = append(cols, strconv.Itoa(s.Id))
 	cols = append(cols, s.Highway.String)
-	cols = append(cols, s.City.String)
-	cols = append(cols, s.District.String)
-	cols = append(cols, s.Country.String)
-	cols = append(cols, s.Postcode.String)
 	cols = append(cols, s.Maxspeed.String)
 	fmt.Println(strings.Join(cols, conf.Delim))
 }
@@ -319,37 +311,9 @@ func loadStreetsFromDatabase(conn *sqlite.Connection, callback func(*sql.Rows)) 
 			SELECT value
 			FROM way_tags
 			WHERE ref = ways.id
-			AND key = 'addr:city'
-			LIMIT 1
-		) AS city,
-		(
-			SELECT value
-			FROM way_tags
-			WHERE ref = ways.id
-			AND key = 'addr:postcode'
-			LIMIT 1
-		) AS postcode,
-		(
-			SELECT value
-			FROM way_tags
-			WHERE ref = ways.id
 			AND key = 'maxspeed'
 			LIMIT 1
-		) AS maxspeed,
-		(
-			SELECT value
-			FROM way_tags
-			WHERE ref = ways.id
-			AND key = 'addr:country'
-			LIMIT 1
-		) AS country,
-		(
-			SELECT value
-			FROM way_tags
-			WHERE ref = ways.id
-			AND key = 'addr:district'
-			LIMIT 1
-		) AS district
+		) AS maxspeed
 	FROM ways
 	ORDER BY ways.id ASC;
 	`)
@@ -373,8 +337,8 @@ func generateStreetsFromWays(conn *sqlite.Connection) []*street {
 
 		var wayid int
 		var nodeids, name string
-		var highway, city, district, country, postcode, maxspeed sql.NullString
-		err := rows.Scan(&wayid, &nodeids, &name, &highway, &city, &postcode, &maxspeed, &country, &district)
+		var highway,  maxspeed sql.NullString
+		err := rows.Scan(&wayid, &nodeids, &name, &highway, &maxspeed)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -397,7 +361,7 @@ func generateStreetsFromWays(conn *sqlite.Connection) []*street {
 			path.InsertAt(i, geo.NewPoint(lon, lat))
 		}
 
-		streets = append(streets, &street{Name: name, Path: path, Id: wayid, Highway: highway, City: city, District: district, Country: country, Postcode: postcode, Maxspeed: maxspeed})
+		streets = append(streets, &street{Name: name, Path: path, Id: wayid, Highway: highway, Maxspeed: maxspeed})
 	})
 
 	return streets
