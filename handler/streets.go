@@ -32,7 +32,7 @@ func (s *Streets) ReadWay(item gosmparse.Way) {
 	}
 
 	// remove all tags except for 'name' to conserve storage space
-	item.Tags = map[string]string{"name": item.Tags["name"]}
+	//item.Tags = map[string]string{"name": item.Tags["name"]}
 
 	// add way to database
 	s.DBHandler.ReadWay(item)
