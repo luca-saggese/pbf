@@ -53,6 +53,7 @@ func (s *Sqlite3) ReadWay(item gosmparse.Way) {
 
 	// ref, key, value
 	for key, value := range item.Tags {
+		log.Println(key)
 		_, err := s.Conn.Stmt.WayTags.Exec(item.ID, key, value)
 		if err != nil {
 			log.Println(err)
