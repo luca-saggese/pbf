@@ -24,14 +24,12 @@ func (s *Sqlite3) ReadNode(item gosmparse.Node) {
 	}
 
 	// discard selected tags
-	//item.Tags = tags.Trim(item.Tags)
-	//DeleteTags(item.Tags, discardableTags)
-	//DeleteTags(item.Tags, uninterestingTags)
+	item.Tags = tags.Trim(item.Tags)
+	DeleteTags(item.Tags, discardableTags)
+	DeleteTags(item.Tags, uninterestingTags)
 
 	// ref, key, value
 	for key, value := range item.Tags {
-		log.Println(key)
-		
 		_, err := s.Conn.Stmt.NodeTags.Exec(item.ID, key, value)
 		if err != nil {
 			log.Println(err)
@@ -49,13 +47,12 @@ func (s *Sqlite3) ReadWay(item gosmparse.Way) {
 	}
 
 	// discard selected tags
-	//item.Tags = tags.Trim(item.Tags)
-	//DeleteTags(item.Tags, discardableTags)
-	//DeleteTags(item.Tags, uninterestingTags)
+	item.Tags = tags.Trim(item.Tags)
+	DeleteTags(item.Tags, discardableTags)
+	DeleteTags(item.Tags, uninterestingTags)
 
 	// ref, key, value
 	for key, value := range item.Tags {
-		log.Println(key)
 		_, err := s.Conn.Stmt.WayTags.Exec(item.ID, key, value)
 		if err != nil {
 			log.Println(err)
